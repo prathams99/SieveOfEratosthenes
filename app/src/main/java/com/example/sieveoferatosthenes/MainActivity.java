@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.sieveoferatosthenes.databinding.ActivityMainBinding;
 import com.example.sieveoferatosthenes.executors.SieveAsyncTask;
+import com.example.sieveoferatosthenes.executors.SieveExecutor;
 import com.example.sieveoferatosthenes.executors.SieveHandler;
 
 
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private NumberAdapter numberAdapter;
     private SieveHandler sieveHandler = new SieveHandler();
+    private final SieveExecutor sieveExecutor = new SieveExecutor();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +63,16 @@ public class MainActivity extends AppCompatActivity {
                         numberAdapter.notifyItemChanged(previousSelectedItem);  // Refresh previous selected item
                         numberAdapter.notifyItemChanged(position);  // Refresh newly selected item
 
-                        new SieveAsyncTask(primes -> {
-                            Log.e(TAG, primes.toString());
-                            String primeNumbersString = android.text.TextUtils.join(", ", primes);
-                            numberResults.setText(primeNumbersString);
-                            numberResults.setTextSize(17);
-                        }).execute(numberAdapter.numbers.get(position));
+                        sieveExecutor.executeSieve(numberAdapter.numbers.get(position), new SieveExecutor.OnPrimesCalculated() {
+                            @Override
+                            public void onResult(List<Integer> primes) {
+                                // This is your callback; you can update your UI here
+                                if (primes != null && !primes.isEmpty()) {
+                                    String primeNumbersString = android.text.TextUtils.join(", ", primes);
+                                    numberResults.setText(primeNumbersString);
+                                }
+                            }
+                        });
 
 //                        sieveHandler.executeSieve(numberAdapter.numbers.get(position), primes -> {
 //                            Log.e(TAG, primes.toString());
@@ -74,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
 //                            numberResults.setTextSize(17);
 //                        });
 
+//                        new SieveAsyncTask(primes -> {
+//                            Log.e(TAG, primes.toString());
+//                            String primeNumbersString = android.text.TextUtils.join(", ", primes);
+//                            numberResults.setText(primeNumbersString);
+//                            numberResults.setTextSize(17);
+//                        }).execute(numberAdapter.numbers.get(position));
                     }
                 }
             }
