@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.sieveoferatosthenes.databinding.ActivityMainBinding;
+import com.example.sieveoferatosthenes.executors.SieveAsyncTask;
 import com.example.sieveoferatosthenes.executors.SieveHandler;
 
 
@@ -59,19 +60,19 @@ public class MainActivity extends AppCompatActivity {
                         numberAdapter.notifyItemChanged(previousSelectedItem);  // Refresh previous selected item
                         numberAdapter.notifyItemChanged(position);  // Refresh newly selected item
 
-//                        new SieveAsyncTask(primes -> {
-//                            Log.e(TAG, primes.toString());
-//                            String primeNumbersString = android.text.TextUtils.join(", ", primes);
-//                            numberResults.setText(primeNumbersString);
-//                            numberResults.setTextSize(17);
-//                        }).execute(numberAdapter.numbers.get(position));
-
-                        sieveHandler.executeSieve(numberAdapter.numbers.get(position), primes -> {
+                        new SieveAsyncTask(primes -> {
                             Log.e(TAG, primes.toString());
                             String primeNumbersString = android.text.TextUtils.join(", ", primes);
                             numberResults.setText(primeNumbersString);
                             numberResults.setTextSize(17);
-                        });
+                        }).execute(numberAdapter.numbers.get(position));
+
+//                        sieveHandler.executeSieve(numberAdapter.numbers.get(position), primes -> {
+//                            Log.e(TAG, primes.toString());
+//                            String primeNumbersString = android.text.TextUtils.join(", ", primes);
+//                            numberResults.setText(primeNumbersString);
+//                            numberResults.setTextSize(17);
+//                        });
 
                     }
                 }
