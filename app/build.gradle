@@ -12,21 +12,6 @@ android {
     namespace 'com.example.sieveoferatosthenes'
     compileSdk 33
 
-    signingConfigs {
-        debugSigning {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-        releaseSigning {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-    }
-
     defaultConfig {
         applicationId "com.example.sieveoferatosthenes"
         minSdk 29
@@ -43,7 +28,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.debugSigning
             versionNameSuffix "-debug"
         }
     }
